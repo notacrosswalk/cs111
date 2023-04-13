@@ -2,6 +2,16 @@
 
 #define SIZE 3
 
+void printMatrix(int matrix[][SIZE])
+{
+    for(int i = 0; i < SIZE; i++)
+    {
+        for(int j = 0; j < SIZE; j++)
+            printf("%d ", matrix[i][j]);
+        printf("\n");
+    }
+}
+
 int trace(int matrix[SIZE][SIZE])
 {
     int result = 0;
@@ -51,16 +61,6 @@ void matrixMultiplication(int a[SIZE][SIZE], int b[SIZE][SIZE], int result[SIZE]
             for(int k = 0; k < SIZE; k++)
                 result[i][j] += (a[i][k]*b[k][j]);
     printMatrix(result);
-}
-
-void printMatrix(int matrix[][SIZE])
-{
-    for(int i = 0; i < SIZE; i++)
-    {
-        for(int j = 0; j < SIZE; j++)
-            printf("%d ", matrix[i][j]);
-        printf("\n");
-    }
 }
 
 int main()
