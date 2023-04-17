@@ -96,7 +96,7 @@ void percentages(int marks[N_STUDENTS][N_SUBJECTS])
 {
     double p[N_STUDENTS];
     for(int i = 0; i < N_STUDENTS; i++)
-        p[i] = 100.0*(double)(marks[i][0]+marks[i][0]+marks[i][0]+marks[i][0])/(double)(N_SUBJECTS*4);
+        p[i] = 100.0*(double)(marks[i][0]+marks[i][0]+marks[i][0]+marks[i][0])/(double)(N_SUBJECTS*100);
     printf("(e)\n");
     printf("The percentages of the students are\n");
     for(int i = 0; i < N_STUDENTS; i++)
