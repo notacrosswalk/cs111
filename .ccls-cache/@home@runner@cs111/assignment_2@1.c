@@ -64,7 +64,7 @@ void numberOfStudentsWhoFailed(int marks[N_STUDENTS][N_SUBJECTS])
         int n_failed = 0;
         for(int j = 0; i < N_SUBJECTS; i++)
             if(failed(marks[i][j])) n_failed++;
-        if(n_failed >= 3) count++;
+        if(n_failed > 3) count++;
     }
     printf("(c)\n");
     printf("%d students have failed in the semester.\n", count);
