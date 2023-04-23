@@ -11,7 +11,7 @@
     3 - Hindi
 */
 
-void subject_marks(int marks[N_SUBJECTS][N_SUBJECTS])
+void subject_marks(int marks[N_STUDENTS][N_SUBJECTS])
 {
     int lowest = 0, highest = 100;
     for(int i = 0; i < N_STUDENTS; i++)
@@ -21,6 +21,14 @@ void subject_marks(int marks[N_SUBJECTS][N_SUBJECTS])
         marks[i][2] = (rand()%(highest - lowest + 1)) + lowest;
         marks[i][3] = (rand()%(highest - lowest + 1)) + lowest;
     }
+    printf("\nThe students' marks matrix is\n");
+    for(int i = 0; i < N_STUDENTS; i++)
+    {
+        for(int j = 0; j < N_SUBJECTS; j++)
+            printf("%d ", marks[i][j]);    
+        printf("\n");
+    }
+    printf("\n");
 }
 
 void computeMathAGrade(int marks[N_STUDENTS][N_SUBJECTS])
@@ -29,7 +37,7 @@ void computeMathAGrade(int marks[N_STUDENTS][N_SUBJECTS])
     for(int i = 0; i < N_STUDENTS; i++)
         if(marks[i][0] >= 90 && marks[i][0] <= 100)
             count++;
-    printf("(a)\n");
+    printf("\n(a)\n");
     printf("%d students have got an A grade in Math.\n", count);
 }
 
@@ -38,16 +46,32 @@ void findHighestInEnglish(int marks[N_STUDENTS][N_SUBJECTS])
     int highest_marks = 0;
     for(int i = 0; i < N_STUDENTS; i++)
         if(highest_marks < marks[i][2]) highest_marks = marks[i][2];
-    printf("(b)\n");
+    printf("\n(b)\n");
     printf("%d is/are the highest marks obtained by a student in English.\n", highest_marks);
+}
+
+void findHighestInHindi(int marks[N_STUDENTS][N_SUBJECTS])
+{
+    int highest_marks = 0;
+    for(int i = 0; i < N_STUDENTS; i++)
+        if(highest_marks < marks[i][3]) highest_marks = marks[i][3];
+    printf("%d is/are the highest marks obtained by a student in Hindi.\n", highest_marks);
 }
 
 void findLowestInHindi(int marks[N_STUDENTS][N_SUBJECTS])
 {
-    int lowest_marks = 0;
+    int lowest_marks = 100;
     for(int i = 0; i < N_STUDENTS; i++)
         if(lowest_marks > marks[i][3]) lowest_marks = marks[i][3];
     printf("%d is/are the lowest marks obtained by a student in Hindi.\n", lowest_marks);
+}
+
+void findLowestInEnglish(int marks[N_STUDENTS][N_SUBJECTS])
+{
+    int lowest_marks = 100;
+    for(int i = 0; i < N_STUDENTS; i++)
+        if(lowest_marks > marks[i][2]) lowest_marks = marks[i][2];
+    printf("%d is/are the lowest marks obtained by a student in English.\n", lowest_marks);
 }
 
 int failed(int m)
@@ -62,11 +86,11 @@ void numberOfStudentsWhoFailed(int marks[N_STUDENTS][N_SUBJECTS])
     for(int i = 0; i < N_STUDENTS; i++)
     {
         int n_failed = 0;
-        for(int j = 0; i < N_SUBJECTS; i++)
+        for(int j = 0; j < N_SUBJECTS; j++)
             if(failed(marks[i][j])) n_failed++;
         if(n_failed > 3) count++;
     }
-    printf("(c)\n");
+    printf("\n(c)\n");
     printf("%d students have failed in the semester.\n", count);
 }
 
@@ -76,7 +100,7 @@ void classAverage(int marks[N_STUDENTS][N_SUBJECTS])
     for(int i = 0; i < N_STUDENTS; i++)
         for(int j = 0; j < N_SUBJECTS; j++)
             class_avg += (double)(marks[i][j])/(double)(N_SUBJECTS*N_STUDENTS);
-    printf("(d)\n");
+    printf("\n(d)\n");
     printf("%lf is the class average for all the subjects.\n", class_avg);
 }
 
@@ -96,8 +120,8 @@ void percentages(int marks[N_STUDENTS][N_SUBJECTS])
 {
     double p[N_STUDENTS];
     for(int i = 0; i < N_STUDENTS; i++)
-        p[i] = 100.0*(double)(marks[i][0]+marks[i][0]+marks[i][0]+marks[i][0])/(double)(N_SUBJECTS*100);
-    printf("(e)\n");
+        p[i] = 100.0*(double)(marks[i][0]+marks[i][1]+marks[i][2]+marks[i][3])/(double)(N_SUBJECTS*100);
+    printf("\n(e)\n");
     printf("The percentages of the students are\n");
     for(int i = 0; i < N_STUDENTS; i++)
         printf("%d. %lf %%\n", i + 1, p[i]);
@@ -109,6 +133,8 @@ int main()
     subject_marks(marks);
     computeMathAGrade(marks);
     findHighestInEnglish(marks);
+    findLowestInEnglish(marks);
+    findHighestInHindi(marks);
     findLowestInHindi(marks);
     numberOfStudentsWhoFailed(marks);
     classAverage(marks);

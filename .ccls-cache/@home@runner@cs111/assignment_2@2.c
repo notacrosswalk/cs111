@@ -87,7 +87,7 @@ void reportDeviation(int u, int m, int original[u][m], int matrix[u][m],
   printf("\nThe deviation in case of Q(%c) is\n", c);
   for (int i = 0; i < u; i++) {
     for (int j = 0; j < m; j++)
-      printf("%d ", (matrix[i][j] - original[i][j]));
+      printf("%d ", (original[i][j] - matrix[i][j]));
     printf("\n");
   }
 }
@@ -131,6 +131,17 @@ void fillMatrixWithRowColumnAverage(int u, int m, int missing_elements[u][m],
   }
 }
 
+void printMatrix(int u, int m, int matrix[u][m], char c) {
+  printf("\nThe matrix generated for Q(%c)\n", c);
+  for (int i = 0; i < u; i++) {
+    for (int j = 0; j < m; j++) {
+      printf("%d ", matrix[i][j]);
+    }
+    printf("\n");
+  }
+  printf("\n");
+}
+
 int main() {
   srand(time(0));
   int u = 0, m = 0;
@@ -140,19 +151,25 @@ int main() {
   scanf("%d", &m);
   int original[u][m];
   generateOriginalMatrix(u, m, original);
+  printMatrix(u, m, original, '2');
   int missing_elements[u][m];
   removeRandomElements(u, m, original, missing_elements);
+  printMatrix(u, m, missing_elements, '2');
   int randomly_filled[u][m];
   fillMatrixRandomly(u, m, missing_elements, randomly_filled);
+  printMatrix(u, m, randomly_filled, 'a');
   reportDeviation(u, m, original, randomly_filled, 'a');
   int rowavg[u][m];
   fillMatrixWithRowAverage(u, m, missing_elements, rowavg);
+  printMatrix(u, m, rowavg, 'b');
   reportDeviation(u, m, original, rowavg, 'b');
   int columnavg[u][m];
   fillMatrixWithColumnAverage(u, m, missing_elements, columnavg);
+  printMatrix(u, m, columnavg, 'c');
   reportDeviation(u, m, original, columnavg, 'c');
   int rowcolumnavg[u][m];
   fillMatrixWithRowColumnAverage(u, m, missing_elements, rowcolumnavg);
+  printMatrix(u, m, rowcolumnavg, 'd');
   reportDeviation(u, m, original, rowcolumnavg, 'd');
   return 0;
 }
