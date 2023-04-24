@@ -133,14 +133,14 @@ void generatePause() {
   scanf("\n%c", &c);
 }
 
-Node *removeDuplicates(Node *head) {
+void removeDuplicates(Node *head) {
   if (head == NULL || head->next == NULL)
-    return head;
+    return;
   Node *current = head;
   Node *p = NULL;
   while (current != NULL) {
     p = current;
-    while (p != NULL && p->next != NULL) {
+    while (p->next != NULL) {
       if (p->next->data == current->data)
         p->next = p->next->next;
       else
@@ -150,7 +150,6 @@ Node *removeDuplicates(Node *head) {
     }
     current = current->next;
   }
-  return head;
 }
 
 void runMenu() {
@@ -177,7 +176,7 @@ void runMenu() {
     case 'B':
     case 'b':
       head = userInput();
-      head = removeDuplicates(head);
+      removeDuplicates(head);
       printf("The linked list after removing duplicates is\n");
       printList(head);
       generatePause();
