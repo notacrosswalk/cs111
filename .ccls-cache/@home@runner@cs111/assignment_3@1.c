@@ -46,10 +46,13 @@ Node *userInput() {
     exit(0);
   }
   int arr[n];
-  printf("Enter the values to generate the Linked List.\n");
+  printf("Enter the values to generate the linked list.\n");
   for (int i = 0; i < n; i++)
     scanf("%d", &arr[i]);
-  return createList(arr, n);
+  printf("\nThe generated linked list is\n");
+  Node *head = createList(arr, n);
+  printList(head);
+  return head;
 }
 
 Node *reverseList(Node *head) {
@@ -124,12 +127,90 @@ Node *findMiddle(Node *head) {
   return slow;
 }
 
+void generatePause() {
+  char c = 0;
+  printf("Press any key (but not Enter/Return) to continue.\n");
+  scanf("\n%c", &c);
+}
+
+Node *removeDuplicates(Node *head) {
+  if (head == NULL || head->next == NULL)
+    return head;
+  Node *current = head;
+  Node *p = NULL;
+  while (current != NULL) {
+    p = current;
+    while (p != NULL && p->next != NULL) {
+      if (p->next->data == current->data)
+        p->next = p->next->next;
+      else
+        p = p->next;
+      if (p == NULL)
+        break;
+    }
+    current = current->next;
+  }
+  return head;
+}
+
+void runMenu() {
+  int condition = 1;
+  while (condition != 0) {
+    printf("MENU\n");
+    printf("(a) Reverse the linked list.\n");
+    printf("(b) Remove duplicates in the linked list.\n");
+    printf("(c) Find the middle element in the linked list.\n");
+    printf("(d) Check if the given linked list is a palindrome.\n");
+    printf("0 - exit");
+    printf("\nPick an option.\n");
+    char c = '\0';
+    Node *head = NULL;
+    scanf("\n%c", &c);
+    switch (c) {
+    case 'A':
+    case 'a':
+      head = userInput();
+      printf("The reversed linked list is\n");
+      printList(reverseList(head));
+      generatePause();
+      break;
+    case 'B':
+    case 'b':
+      head = userInput();
+      head = removeDuplicates(head);
+      printf("The linked list after removing duplicates is\n");
+      printList(head);
+      generatePause();
+      break;
+    case 'C':
+    case 'c':
+      head = userInput();
+      printf("%d is the middle element in the linked list.\n",
+             (findMiddle(head))->data);
+      generatePause();
+      break;
+    case 'D':
+    case 'd':
+      head = userInput();
+      if (isPalindrome(head) == 0)
+        printf("It is not a palindrome.\n");
+      else
+        printf("It is a palindrome.\n");
+      generatePause();
+      break;
+    case '0':
+      condition = 0;
+      break;
+    default:
+      printf("That's an invalid choice. Terminating the execution of the "
+             "program.\n");
+      exit(0);
+    }
+    printf("\e[1;1H\e[2J"); // RegEx to clear the screen
+  }
+}
+
 int main() {
-  Node *head = userInput();
-  printList(head);
-  // printf("%d\n", findMiddle(head)->data);
-  // printList(reverseList(head));
-  // printf("%d\n", isPalindrome(head));
-  deleteList(head);
+  runMenu();
   return 0;
 }
