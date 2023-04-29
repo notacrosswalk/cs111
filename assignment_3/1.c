@@ -206,7 +206,6 @@ void runMenu() {
              "program.\n");
       exit(0);
     }
-    printf("\e[1;1H\e[2J"); // RegEx to clear the screen
   }
 }
 
