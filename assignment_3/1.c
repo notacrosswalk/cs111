@@ -128,7 +128,7 @@ Node *findMiddle(Node *head) {
   return slow;
 }
 
-void generatePause() {
+void confirmationToShowMenuAgain() {
   char c = 0;
   printf("Press any key (but not Enter/Return) to continue.\n");
   scanf("\n%c", &c);
@@ -172,7 +172,8 @@ void runMenu() {
       head = userInput();
       printf("The reversed linked list is\n");
       printList(reverseList(head));
-      generatePause();
+      deleteList(head);
+      confirmationToShowMenuAgain();
       break;
     case 'B':
     case 'b':
@@ -180,14 +181,16 @@ void runMenu() {
       removeDuplicates(head);
       printf("The linked list after removing duplicates is\n");
       printList(head);
-      generatePause();
+      deleteList(head);
+      confirmationToShowMenuAgain();
       break;
     case 'C':
     case 'c':
       head = userInput();
       printf("%d is the middle element in the linked list.\n",
              (findMiddle(head))->data);
-      generatePause();
+      deleteList(head);
+      confirmationToShowMenuAgain();
       break;
     case 'D':
     case 'd':
@@ -196,7 +199,8 @@ void runMenu() {
         printf("It is not a palindrome.\n");
       else
         printf("It is a palindrome.\n");
-      generatePause();
+      deleteList(head);
+      confirmationToShowMenuAgain();
       break;
     case '0':
       condition = 0;
