@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct node {
   int data;
@@ -100,17 +101,17 @@ Node *reverseAtMiddle(Node *head) {
   return pslow->next;
 }
 
-int isPalindrome(Node *head) {
+bool isPalindrome(Node *head) {
   Node *a = head;
   Node *b = reverseAtMiddle(head);
   Node *c = b;
   while (a != NULL && b != NULL && a != c) {
     if (a->data != b->data)
-      return 0;
+      return false;
     a = a->next;
     b = b->next;
   }
-  return 1;
+  return true;
 }
 
 Node *findMiddle(Node *head) {
