@@ -195,7 +195,7 @@ void runMenu() {
     case 'D':
     case 'd':
       head = userInput();
-      if (isPalindrome(head) == 0)
+      if (isPalindrome(head) == false)
         printf("It is not a palindrome.\n");
       else
         printf("It is a palindrome.\n");
