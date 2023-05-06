@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// TODO Delete list, free memory
-
 typedef struct node
 {
     int data;
@@ -325,9 +323,42 @@ Node *rotate()
 
 void runMenu()
 {
-    printList(reverse());
-    printList(rotate());
-    printList(sort());
+    printf("***MENU***");
+    printf("1 - Reverse a doubly linked list in groups of k.\n");
+    printf("2 - Sort a doubly linked list in groups of k.\n");
+    printf("3 - Rotate a doubly linked list by k positions.\n");
+    printf("0 - Exit the program.\n");
+    printf("Enter your choice.\n");
+    
+    int choice = -1;
+    scanf("\n%d", &choice);
+    
+    Node *head = NULL;
+
+    switch(choice)
+    {
+        case 1:
+            head = reverse();
+            printList(head);
+            deleteList(head);
+            head = NULL;
+            break;
+        case 2:
+            head = sort();
+            printList(head);
+            deleteList(head);
+            head = NULL;
+            break;
+        case 3:
+            head = rotate();
+            printList(head);
+            deleteList(head);
+            head = NULL;
+            break;
+        default:
+            printf("Goodbye!\n");
+            exit(0);
+    }
 }
 
 int main()
