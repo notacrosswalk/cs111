@@ -202,18 +202,18 @@ void sortOrdinary(Node *head, Node *tail)
         return;
     }
 
-    while(tail != NULL)
+    while(tail != head)
     {
-        Node *p = tail;
-        while(p->prev != head->prev)
+        Node *p = head;
+        while(p != tail)
         {
-            if(p->data < p->prev->data)
+            if(p->data > p->next->data)
             {
                 int temp = p->data;
-                p->data = p->prev->data;
-                p->prev->data = temp;
+                p->data = p->next->data;
+                p->next->data = temp;
             }
-            p = p->prev;
+            p = p->next;
         }
         tail = tail->prev;
     }
@@ -230,43 +230,28 @@ Node *sort()
     if (head->next == NULL || k < 2)
         return head;
 
-    // Finding the length of the Doubly Linked List
-    int length = 0;
-    Node *current = head;
-    while (current != NULL)
-    {
-        length++;
-        current = current->next;
-    }
-    
-    if(k >= length)
-    {
-        sortOrdinary(head, NULL);
-        return head;
-    }
-
     int c = 1;
-    current = head;
+    Node *current = head;
     Node *chead = head;
 
-    while(c <= (length/k)*k)
+    while(current != NULL)
     {
-        if(c%k == 0)
+        if(current->next == NULL)
         {
             sortOrdinary(chead, current);
-
+        }
+        else if(c%k == 0)
+        {
+            sortOrdinary(chead, current);
         }
         else if(c%k == 1)
         {
             chead = current;
         }
-
         current = current->next;
         c++;
     }
-    
-    sortOrdinary(current, NULL);
-    
+        
     return head;
 }
 
