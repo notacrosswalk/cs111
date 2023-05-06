@@ -70,6 +70,10 @@ void input(Node **head, int *k)
         printf("That's an invalid input. Terminating the execution.\n");
         exit(0);
     }
+
+    printf("- Input:\n");
+    printList(*head);
+    printf("- Output:\n");
 }
 
 void deleteList(Node *head)
@@ -191,29 +195,27 @@ Node *reverse()
     return newHead;
 }
 
-void sortOrdinary(Node *head, Node *nextHead)
+void sortOrdinary(Node *head, Node *tail)
 {
     if(head == NULL || head->next == NULL)
     {
         return;
     }
 
-
-    Node *current = head;
-    while(current != nextHead)
+    while(tail != NULL)
     {
-        Node *p = current;
-        while(p->next != nextHead)
+        Node *p = tail;
+        while(p->prev != head->prev)
         {
-            if(p->data > p->next->data)
+            if(p->data < p->prev->data)
             {
                 int temp = p->data;
-                p->data = p->next->data;
-                p->next->data = p->data;
+                p->data = p->prev->data;
+                p->prev->data = temp;
             }
-            p = p->next;
+            p = p->prev;
         }
-        current = current->next;
+        tail = tail->prev;
     }
 }
 
@@ -251,7 +253,7 @@ Node *sort()
     {
         if(c%k == 0)
         {
-            sortOrdinary(chead, current->next);
+            sortOrdinary(chead, current);
 
         }
         else if(c%k == 1)
@@ -323,7 +325,7 @@ Node *rotate()
 
 void runMenu()
 {
-    printf("***MENU***\n");
+    printf("MENU\n");
     printf("1 - Reverse a doubly linked list in groups of k.\n");
     printf("2 - Sort a doubly linked list in groups of k.\n");
     printf("3 - Rotate a doubly linked list by k positions.\n");
