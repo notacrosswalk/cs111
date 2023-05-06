@@ -323,7 +323,7 @@ Node *rotate()
 
 void runMenu()
 {
-    printf("***MENU***");
+    printf("***MENU***\n");
     printf("1 - Reverse a doubly linked list in groups of k.\n");
     printf("2 - Sort a doubly linked list in groups of k.\n");
     printf("3 - Rotate a doubly linked list by k positions.\n");
