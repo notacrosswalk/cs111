@@ -193,6 +193,32 @@ Node *reverse()
     return newHead;
 }
 
+void sortOrdinary(Node *head, Node *nextHead)
+{
+    if(head == NULL || head->next == NULL)
+    {
+        return;
+    }
+
+
+    Node *current = head;
+    while(current != nextHead)
+    {
+        Node *p = current;
+        while(p->next != nextHead)
+        {
+            if(p->data > p->next->data)
+            {
+                int temp = p->data;
+                p->data = p->next->data;
+                p->next->data = p->data;
+            }
+            p = p->next;
+        }
+        current = current->next;
+    }
+}
+
 Node *sort()
 {
     // Input
@@ -213,7 +239,35 @@ Node *sort()
         current = current->next;
     }
     
+    if(k >= length)
+    {
+        sortOrdinary(head, NULL);
+        return head;
+    }
 
+    int c = 1;
+    current = head;
+    Node *chead = head;
+
+    while(c <= (length/k)*k)
+    {
+        if(c%k == 0)
+        {
+            sortOrdinary(chead, current->next);
+
+        }
+        else if(c%k == 1)
+        {
+            chead = current;
+        }
+
+        current = current->next;
+        c++;
+    }
+    
+    sortOrdinary(current, NULL);
+    
+    return head;
 }
 
 Node *rotate()
@@ -273,6 +327,7 @@ void runMenu()
 {
     printList(reverse());
     printList(rotate());
+    printList(sort());
 }
 
 int main()
