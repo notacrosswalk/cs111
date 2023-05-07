@@ -74,6 +74,10 @@ void checkParentheses()
             else
             {
                 printf("Not Balanced.\n");
+                free(str);
+                free(stack);
+                str = NULL;
+                stack = NULL;
                 exit(0);
             }
         }
@@ -85,6 +89,8 @@ void checkParentheses()
         printf("Not Balanced.\n");
     free(str);
     str = NULL;
+    free(stack);
+    stack = NULL;
 }
 
 int main()

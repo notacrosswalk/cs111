@@ -83,6 +83,9 @@ void isPalindrome()
         else 
         {
             printf("Not Palindrome.\n");
+            free(str);
+            freeStack();
+            str = NULL;
             exit(0);
         }
         i++;
