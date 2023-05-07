@@ -9,8 +9,6 @@ typedef struct node
 
 Node *head = NULL;
 
-// TODO Free memory
-
 void push(char x)
 {
     Node *newNode = calloc(1, sizeof(Node));
@@ -89,7 +87,6 @@ void isPalindrome()
         }
         i++;
     }
-    // CHECK
     printf("Palindrome.\n");
     free(str);
     freeStack();
