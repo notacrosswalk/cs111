@@ -45,7 +45,7 @@ char *input(int *size)
     scanf("\n%d", &n);
     char *str = calloc(n + 1, sizeof(char));
     printf("Enter the string.\n");
-    gets(str);
+    scanf("\n%[^\n]s", str);
     *size = n;
     return str;
 }
@@ -65,11 +65,11 @@ void checkParentheses()
         }
         else if(str[i] == ')' || str[i] == ']' || str[i] == '}')
         {
-            if(str[i] == ')' && top == '(')
+            if(str[i] == ')' && topOfStack(stack) == '(')
                 pop(stack);
-            else if(str[i] == ']' && top == '[')
+            else if(str[i] == ']' && topOfStack(stack) == '[')
                 pop(stack);
-            else if(str[i] == '}' && top == '{')
+            else if(str[i] == '}' && topOfStack(stack) == '{')
                 pop(stack);
             else
             {
