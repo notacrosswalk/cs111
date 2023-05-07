@@ -64,7 +64,7 @@ char *input()
     scanf("\n%d", &n);
     char *str = calloc(n + 1, sizeof(char));
     printf("Enter the string.\n");
-    gets(str);
+    scanf("\n%[^\n]s", str);
     return str;
 }
 
