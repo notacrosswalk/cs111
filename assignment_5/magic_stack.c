@@ -16,11 +16,11 @@ void print_stack()
 {
     for(int i = top; i >= 0; i--)
     {
-        printf("%d: ", i);
         if(front[i] == -1)
         {
             continue;
         }
+        printf("%d: ", i);
         if(rear[i] < front[i])
         {
             for(int j = front[i]; j <= n; j++)
@@ -56,6 +56,10 @@ void generate_stack()
         front[i] = -1;
     }
     rear = (int *) calloc(n, sizeof(int));
+    for(int i = 0; i < n; i++)
+    {
+        rear[i] = -1;
+    }
     size = (int *) calloc(n, sizeof(int));
 }
 
@@ -96,7 +100,7 @@ void sort()
         }
     }
     int *temp = st[largest_index];
-    st[largest_index] = st[top];
+    st[largest_index] = st[top];`
     st[top] = temp;
 }
 
@@ -107,6 +111,11 @@ void push(int x)
         printf("Overflow!\n");
         exit(0);
     }
+    if(size[min_index] == 0)
+    {
+        front[min_index] = 0;
+        top = min_index;
+    }
     int r = rear[min_index];
     if(r == k - 1)
         r = 0;
@@ -115,10 +124,6 @@ void push(int x)
     st[min_index][r] = x;
     rear[min_index] = r;
     size[min_index] += 1;
-    if(size[min_index] == 1)
-    {
-        top = min_index;
-    }
     sort();
 }
 
@@ -151,8 +156,24 @@ bool search()
     return true;
 }
 
+void input()
+{
+    printf("Enter n:\n");
+    scanf("%d", &n);
+    printf("Enter k:\n");
+    scanf("%d", &k);
+}
 
 int main()
 {
+    input();
+    generate_stack();
+    push(1);
+    push(2);
+    push(3);
+    push(4);
+    push(5);
+    print_stack();
+    free_stack();
     return 0;
 }
