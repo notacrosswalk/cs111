@@ -271,33 +271,9 @@ void runInfix()
     infixToPrefix(str);
 }
 
-void runMenu()
-{
-    printf("MENU\n");
-    printf("1 - Infix Conversions\n");
-    printf("2 - Magic Stack\n");
-    printf("0 - Exit\n");
-    printf("Enter your choice.\n");
-
-    short choice = -1;
-    scanf("%hi", &choice);
-
-    switch(choice)
-    {
-        case 1: 
-            runInfix();
-            break;
-        case 2:
-            // runMagicStack();
-            break;
-        default:
-            printf("Goodbye!\n");
-            break;
-    }
-}
 
 int main()
 {
-    runMenu();
+    runInfix();
     return 0;
 }
