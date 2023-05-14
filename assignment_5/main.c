@@ -132,7 +132,7 @@ void infixToPostfix(char *str)
                 {
                     break;
                 }
-                else if(precedence(i_top()) >= precedence(str[i]))
+                else if(i_precedence(i_top()) >= i_precedence(str[i]))
                 {
                     printf("%c", i_pop()); 
                 }
@@ -143,7 +143,7 @@ void infixToPostfix(char *str)
             }
             if(str[i] != ')')
             {
-                push(str[i]);
+                i_push(str[i]);
             }
         }
         else
@@ -159,7 +159,7 @@ void infixToPostfix(char *str)
     }
 
     printf("\n");
-    emptyStack();
+    i_emptyStack();
 }
 
 void infixToPrefix(char *str)
@@ -218,7 +218,7 @@ void infixToPrefix(char *str)
                 {
                     break;
                 }
-                else if(precedence(i_top()) >= precedence(newStr[i]))
+                else if(i_precedence(i_top()) >= i_precedence(newStr[i]))
                 // >= as discussed in the tutorial
                 {
                     result[j++] = i_pop();
@@ -480,7 +480,7 @@ void runMagicStack()
             ii_print_stack();
             break;
         case 2:
-            printf("The popped value is %d.\n", pop());
+            printf("The popped value is %d.\n", ii_pop());
             ii_print_stack();
             break;
         default:
