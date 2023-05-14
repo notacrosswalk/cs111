@@ -80,7 +80,6 @@ void free_stack()
 
 void sort()
 {
-    int largest_index = 0;
     min_index = 0;
     max_index = 0;
     for(int i = 0; i < n; i++)
@@ -93,17 +92,24 @@ void sort()
         {
             max_index = i;
         }
-        if(front[i] != -1)
+    }
+    for(int i = top; i >= 0; i--)
+    {
+        int largest_index = top;
+        for(int j = top; j >= 0; j--)
         {
-            if(st[i][front[i]] > st[largest_index][front[largest_index]])
+            if(front[j] != -1)
             {
-                largest_index = i;
+                if(st[j][front[j]] > st[largest_index][front[largest_index]])
+                {
+                    largest_index = j;
+                }
             }
         }
+        int *temp = st[largest_index];
+        st[largest_index] = st[i];
+        st[i] = temp;
     }
-    int *temp = st[largest_index];
-    st[largest_index] = st[top];`
-    st[top] = temp;
 }
 
 void push(int x)
