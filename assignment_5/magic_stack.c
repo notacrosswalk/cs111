@@ -46,6 +46,11 @@ void print_stack()
 void generate_stack()
 {
     st = (int **) calloc(n, sizeof(int *));
+    if(st == NULL)
+    {
+        printf("Memory couldn't be allocated for the magic stack.\n");
+        exit(0);
+    }
     for(int i = 0; i < n; i++)
     {
         st[i] = (int *) calloc(k, sizeof(int));
@@ -170,6 +175,11 @@ void input()
     scanf("%d", &n);
     printf("Enter k:\n");
     scanf("%d", &k);
+}
+
+void run()
+{
+
 }
 
 int main()
