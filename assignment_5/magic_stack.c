@@ -81,6 +81,8 @@ void free_stack()
 void sort()
 {
     int largest_index = 0;
+    min_index = 0;
+    max_index = 0;
     for(int i = 0; i < n; i++)
     {
         if(size[i] < size[min_index])
