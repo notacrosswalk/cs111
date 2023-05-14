@@ -18,7 +18,7 @@ typedef struct node
 
 Node *head;
 
-void push(char x)
+void i_push(char x)
 {
     Node *newNode = calloc(1, sizeof(Node));
     newNode->data = x;
@@ -33,7 +33,7 @@ void push(char x)
     }
 }
 
-char pop()
+char i_pop()
 {
     if(head == NULL)
     {
@@ -47,7 +47,7 @@ char pop()
     return data;
 }
 
-char top()
+char i_top()
 {
     if(head == NULL)
     {
@@ -56,7 +56,7 @@ char top()
     return head->data;
 }
 
-bool empty()
+bool i_empty()
 {
     if(head == NULL)
     {
@@ -65,7 +65,7 @@ bool empty()
     return false;
 }
 
-void emptyStack()
+void i_emptyStack()
 {
     while(head != NULL)
     {
@@ -76,7 +76,7 @@ void emptyStack()
     }
 }
 
-bool isOperator(char c)
+bool i_isOperator(char c)
 {
     switch(c)
     {
@@ -94,7 +94,7 @@ bool isOperator(char c)
     }   
 }
 
-short precedence(char c)
+short i_precedence(char c)
 {
     switch(c)
     {
@@ -109,16 +109,16 @@ short precedence(char c)
 void infixToPostfix(char *str)
 {
     int i = 0;
-    emptyStack();
+    i_emptyStack();
     while(str[i] != '\0')
     {
-        if(isOperator(str[i]))
+        if(i_isOperator(str[i]))
         {
-            while(!empty())
+            while(!i_empty())
             {
                 if(str[i] == ')')
                 {
-                    char c = pop();
+                    char c = i_pop();
                     if(c == '(')
                     {
                         break;
@@ -128,13 +128,13 @@ void infixToPostfix(char *str)
                         printf("%c", c);
                     }
                 }
-                else if(top() == '(')
+                else if(i_top() == '(')
                 {
                     break;
                 }
-                else if(precedence(top()) >= precedence(str[i]))
+                else if(precedence(i_top()) >= precedence(str[i]))
                 {
-                    printf("%c", pop()); 
+                    printf("%c", i_pop()); 
                 }
                 else
                 {
@@ -153,9 +153,9 @@ void infixToPostfix(char *str)
         i++;
     }
 
-    while(!empty())
+    while(!i_empty())
     {
-        printf("%c ", pop());
+        printf("%c ", i_pop());
     }
 
     printf("\n");
@@ -164,7 +164,7 @@ void infixToPostfix(char *str)
 
 void infixToPrefix(char *str)
 {
-    emptyStack();
+    i_emptyStack();
 
     short length = strlen(str);
 
@@ -198,13 +198,13 @@ void infixToPrefix(char *str)
 
     while(newStr[i] != '\0')
     {
-        if(isOperator(newStr[i]))
+        if(i_isOperator(newStr[i]))
         {
-            while(!empty())
+            while(!i_empty())
             {
                 if(newStr[i] == ')')
                 {
-                    char c = pop();
+                    char c = i_pop();
                     if(c == '(')
                     {
                         break;
@@ -214,14 +214,14 @@ void infixToPrefix(char *str)
                         result[j++] = c;
                     }
                 }
-                else if(top() == '(')
+                else if(i_top() == '(')
                 {
                     break;
                 }
-                else if(precedence(top()) >= precedence(newStr[i]))
+                else if(precedence(i_top()) >= precedence(newStr[i]))
                 // >= as discussed in the tutorial
                 {
-                    result[j++] = pop();
+                    result[j++] = i_pop();
                 }
                 else
                 {
@@ -230,7 +230,7 @@ void infixToPrefix(char *str)
             }
             if(newStr[i] != ')')
             {
-                push(newStr[i]);
+                i_push(newStr[i]);
             }
         }
         else
@@ -240,9 +240,9 @@ void infixToPrefix(char *str)
         i++;
     }
 
-    while(!empty())
+    while(!i_empty())
     {
-        result[j++] = pop();
+        result[j++] = i_pop();
     }
     
     result[j] = '\0';
@@ -255,7 +255,7 @@ void infixToPrefix(char *str)
     }
 
     printf("%s\n", result);
-    emptyStack();
+    i_emptyStack();
 }
 
 void runInfix()
@@ -281,7 +281,7 @@ int k;
 int min_index;
 int max_index;
 
-void print_stack()
+void ii_print_stack()
 {
     printf("Magic Stack:\n");
     for (int i = top; i >= 0; i--)
@@ -313,7 +313,7 @@ void print_stack()
     }
 }
 
-void generate_stack()
+void ii_generate_stack()
 {
     st = (int **)calloc(n, sizeof(int *));
     if (st == NULL)
@@ -338,7 +338,7 @@ void generate_stack()
     size = (int *)calloc(n, sizeof(int));
 }
 
-void free_stack()
+void ii_free_stack()
 {
     for (int i = 0; i < n; i++)
     {
@@ -353,7 +353,7 @@ void free_stack()
     rear = NULL;
 }
 
-void sort()
+void ii_sort()
 {
     min_index = 0;
     max_index = 0;
@@ -396,7 +396,7 @@ void sort()
     }
 }
 
-void push(int x)
+void ii_push(int x)
 {
     if (size[min_index] == k)
     {
@@ -416,10 +416,10 @@ void push(int x)
     st[min_index][r] = x;
     rear[min_index] = r;
     size[min_index] += 1;
-    sort();
+    ii_sort();
 }
 
-int pop()
+int ii_pop()
 {
     if (size[max_index] <= 1)
     {
@@ -434,11 +434,11 @@ int pop()
         f += 1;
     front[max_index] = f;
     size[max_index] -= 1;
-    sort();
+    ii_sort();
     return data;
 }
 
-bool search()
+bool ii_search()
 {
     for (int i = top; i >= 0; i--)
     {
@@ -448,7 +448,7 @@ bool search()
     return true;
 }
 
-void input()
+void ii_input()
 {
     printf("Enter n:\n");
     scanf("%d", &n);
@@ -458,8 +458,8 @@ void input()
 
 void runMagicStack()
 {
-    input();
-    generate_stack();
+    ii_input();
+    ii_generate_stack();
     int c = 1;
     do
     {
@@ -476,19 +476,19 @@ void runMagicStack()
             printf("Enter a value to push.\n");
             int x;
             scanf("%d", &x);
-            push(x);
-            print_stack();
+            ii_push(x);
+            ii_print_stack();
             break;
         case 2:
             printf("The popped value is %d.\n", pop());
-            print_stack();
+            ii_print_stack();
             break;
         default:
             c = 0;
             break;
         }
     } while (c);
-    free_stack();
+    ii_free_stack();
 }
 
 void runMenu()
