@@ -95,8 +95,8 @@ void sort()
     }
     for(int i = top; i >= 0; i--)
     {
-        int largest_index = top;
-        for(int j = top; j >= 0; j--)
+        int largest_index = i;
+        for(int j = i; j >= 0; j--)
         {
             if(front[j] != -1)
             {
@@ -181,7 +181,6 @@ int main()
     push(3);
     push(4);
     push(5);
-    print_stack();
     free_stack();
     return 0;
 }
