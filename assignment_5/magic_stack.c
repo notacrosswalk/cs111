@@ -14,27 +14,28 @@ int max_index;
 
 void print_stack()
 {
-    for(int i = top; i >= 0; i--)
+    printf("Magic Stack:\n");
+    for (int i = top; i >= 0; i--)
     {
-        if(front[i] == -1)
+        if (front[i] == -1)
         {
             continue;
         }
-        printf("%d: ", i);
-        if(rear[i] < front[i])
+        printf("Block index %d: ", i);
+        if (rear[i] < front[i])
         {
-            for(int j = front[i]; j <= n; j++)
+            for (int j = front[i]; j <= n; j++)
             {
                 printf("%d ", st[i][j]);
             }
-            for(int j = 0; j <= rear[i]; j++)
+            for (int j = 0; j <= rear[i]; j++)
             {
                 printf("%d ", st[i][j]);
             }
         }
         else
         {
-            for(int j = front[i]; j <= rear[i]; j++)
+            for (int j = front[i]; j <= rear[i]; j++)
             {
                 printf("%d ", st[i][j]);
             }
@@ -45,32 +46,32 @@ void print_stack()
 
 void generate_stack()
 {
-    st = (int **) calloc(n, sizeof(int *));
-    if(st == NULL)
+    st = (int **)calloc(n, sizeof(int *));
+    if (st == NULL)
     {
         printf("Memory couldn't be allocated for the magic stack.\n");
         exit(0);
     }
-    for(int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        st[i] = (int *) calloc(k, sizeof(int));
+        st[i] = (int *)calloc(k, sizeof(int));
     }
-    front = (int *) calloc(n, sizeof(int));
-    for(int i = 0; i < n; i++)
+    front = (int *)calloc(n, sizeof(int));
+    for (int i = 0; i < n; i++)
     {
         front[i] = -1;
     }
-    rear = (int *) calloc(n, sizeof(int));
-    for(int i = 0; i < n; i++)
+    rear = (int *)calloc(n, sizeof(int));
+    for (int i = 0; i < n; i++)
     {
         rear[i] = -1;
     }
-    size = (int *) calloc(n, sizeof(int));
+    size = (int *)calloc(n, sizeof(int));
 }
 
 void free_stack()
 {
-    for(int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
         free(st[i]);
         st[i] = NULL;
@@ -87,25 +88,25 @@ void sort()
 {
     min_index = 0;
     max_index = 0;
-    for(int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        if(size[i] < size[min_index])
+        if (size[i] < size[min_index])
         {
             min_index = i;
         }
-        if(size[i] > size[max_index])
+        if (size[i] > size[max_index])
         {
             max_index = i;
         }
     }
-    for(int i = top; i >= 0; i--)
+    for (int i = top; i >= 0; i--)
     {
         int largest_index = i;
-        for(int j = i; j >= 0; j--)
+        for (int j = i; j >= 0; j--)
         {
-            if(front[j] != -1)
+            if (front[j] != -1)
             {
-                if(st[j][front[j]] > st[largest_index][front[largest_index]])
+                if (st[j][front[j]] > st[largest_index][front[largest_index]])
                 {
                     largest_index = j;
                 }
@@ -114,23 +115,32 @@ void sort()
         int *temp = st[largest_index];
         st[largest_index] = st[i];
         st[i] = temp;
+        int temp_front = front[largest_index];
+        front[largest_index] = front[i];
+        front[i] = temp_front;
+        int temp_rear = rear[largest_index];
+        rear[largest_index] = rear[i];
+        rear[i] = temp_rear;
+        int temp_size = size[largest_index];
+        size[largest_index] = size[i];
+        size[i] = temp_size;
     }
 }
 
 void push(int x)
 {
-    if(size[min_index] == k)
+    if (size[min_index] == k)
     {
         printf("Overflow!\n");
-        exit(0);
+        return;
     }
-    if(size[min_index] == 0)
+    if (size[min_index] == 0)
     {
         front[min_index] = 0;
         top = min_index;
     }
     int r = rear[min_index];
-    if(r == k - 1)
+    if (r == k - 1)
         r = 0;
     else
         r += 1;
@@ -142,14 +152,14 @@ void push(int x)
 
 int pop()
 {
-    if(size[max_index] <= 1)
+    if (size[max_index] <= 1)
     {
         printf("Underflow!\n");
-        exit(0);
+        return -1;
     }
     int f = front[max_index];
     int data = st[max_index][f];
-    if(f == k - 1)
+    if (f == k - 1)
         f = 0;
     else
         f += 1;
@@ -161,9 +171,9 @@ int pop()
 
 bool search()
 {
-    for(int i = top; i >= 0; i--)
+    for (int i = top; i >= 0; i--)
     {
-        if(size[i] != 1)
+        if (size[i] != 1)
             return false;
     }
     return true;
@@ -179,18 +189,41 @@ void input()
 
 void run()
 {
-
+    int c = 1;
+    do
+    {
+        printf("------------\n");
+        printf("0 - Exit.\n");
+        printf("1 - Push a value.\n");
+        printf("2 - Pop a value.\n");
+        printf("Enter your choice.\n");
+        int choice;
+        scanf("%d", &choice);
+        switch (choice)
+        {
+        case 1:
+            printf("Enter a value to push.\n");
+            int x;
+            scanf("%d", &x);
+            push(x);
+            print_stack();
+            break;
+        case 2:
+            printf("The popped value is %d.\n", pop());
+            print_stack();
+            break;
+        default:
+            c = 0;
+            break;
+        }
+    } while (c);
 }
 
 int main()
 {
     input();
     generate_stack();
-    push(1);
-    push(2);
-    push(3);
-    push(4);
-    push(5);
+    run();
     free_stack();
     return 0;
 }
