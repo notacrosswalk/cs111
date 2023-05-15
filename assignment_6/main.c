@@ -15,12 +15,60 @@ struct queue_t
     QueueNode *rear;
 } Queue;
 
+typedef struct stack_node_t
+{
+    int data;
+    struct stack_node_t *next;
+} StackNode;
+
+struct stack_t
+{
+    StackNode* top;
+} Stack;
+
 typedef struct bt_node_t 
 {
     int data;
     struct bt_node_t *left;
     struct bt_node_t *right;
 } TreeNode;
+
+void empty_stack()
+{
+    while(Stack.top != NULL)
+    {
+        StackNode *temp = Stack.top;
+        Stack.top = Stack.top->next;
+        free(temp);
+    }
+}
+
+void push(int x)
+{
+    StackNode *newNode = (StackNode*) calloc(1, sizeof(StackNode));
+    if(newNode == NULL)
+    {
+        printf("Stack Overflow.\n");
+        exit(0);
+    }
+    newNode->data = x;
+    newNode->next = StackNode.top;
+    StackNode.top = newNode;
+}
+
+int pop()
+{
+    if(Stack.top == NULL)
+    {
+        return -1;
+    }
+    int data = Stack.top->data;
+    StackNode *temp = Stack.top;
+    Stack.top = Stack.top->next;
+    free(temp);
+    temp = NULL;
+    return data;
+}
 
 void clear_queue()
 {
@@ -182,7 +230,28 @@ bool mirror(TreeNode *root_1, TreeNode *root_2)
 
 void runMenu()
 {
-
+    printf("MENU\n");
+    printf("1 - Circular queues question\n");
+    printf("2 - Check if two trees are mirrors of each other\n");
+    printf("3 - Zigzag tree traversal\n");
+    int choice = 0;
+    printf("Enter your choice.\n");
+    scanf("%d", &choice);
+    switch(choice)
+    {
+        case 1: 
+            runCQueue();
+            break;
+        case 2:
+            runMirror();
+            break;
+        case 3:
+            runZigzag();
+            break;
+        default:
+            printf("That is an invalid value.\n");
+            exit(0);
+    }
 }
 
 int main()
