@@ -7,6 +7,13 @@
  * Struct definitions
 */
 
+typedef struct bt_node_t 
+{
+    int data;
+    struct bt_node_t *left;
+    struct bt_node_t *right;
+} TreeNode;
+
 typedef struct queue_node_t
 {
     int data;
@@ -21,7 +28,7 @@ struct queue_t
 
 typedef struct stack_node_t
 {
-    int data;
+    TreeNode *data;
     struct stack_node_t *next;
 } StackNode;
 
@@ -30,16 +37,18 @@ struct stack_t
     StackNode* top;
 } Stack_1, Stack_2;
 
-typedef struct bt_node_t 
-{
-    int data;
-    struct bt_node_t *left;
-    struct bt_node_t *right;
-} TreeNode;
-
 /** 
  * Stack implementation
  */
+
+bool isEmpty(struct stack_t Stack)
+{
+    if(Stack.top == NULL)
+    {
+        return true;
+    }
+    return false;
+}
 
 void empty_stack(struct stack_t Stack)
 {
@@ -51,7 +60,7 @@ void empty_stack(struct stack_t Stack)
     }
 }
 
-void push(struct stack_t Stack, int x)
+void push(struct stack_t Stack, TreeNode* x)
 {
     StackNode *newNode = (StackNode*) calloc(1, sizeof(StackNode));
     if(newNode == NULL)
@@ -60,17 +69,17 @@ void push(struct stack_t Stack, int x)
         exit(0);
     }
     newNode->data = x;
-    newNode->next = StackNode.top;
-    StackNode.top = newNode;
+    newNode->next = Stack.top;
+    Stack.top = newNode;
 }
 
-int pop(struct stack_t Stack)
+TreeNode* pop(struct stack_t Stack)
 {
     if(Stack.top == NULL)
     {
-        return -1;
+        return NULL;
     }
-    int data = Stack.top->data;
+    TreeNode* data = Stack.top->data;
     StackNode *temp = Stack.top;
     Stack.top = Stack.top->next;
     free(temp);
@@ -139,7 +148,7 @@ TreeNode* newTreeNode(int x)
     return newNode;
 }
 
-void deleteTree(Node *root)
+void deleteTree(TreeNode *root)
 {
     if(root == NULL)
     {
@@ -227,7 +236,15 @@ void zig_zag_traversal(TreeNode *root)
         return;
     }
     TreeNode *current = root;
-    
+    int current_stack = 1;
+    push(Stack_1, current);
+    while(current != NULL)
+    {
+        if(current_stack == 1)
+        {
+
+        }
+    }
 }
 
 /**
@@ -253,7 +270,15 @@ bool traverse_and_check(TreeNode *root_1, TreeNode *root_2)
     {
         return true;
     }
-    if(root_1->data != root_2->data)
+    if(root_1 == NULL)
+    {
+        return false;
+    }
+    if(root_2 == NULL)
+    {
+        return false;
+    }
+    if(root_1->data  != root_2->data)
     {
         return false;
     }
@@ -274,6 +299,8 @@ void runMirror()
     TreeNode *root_2 = input_tree();
     
     mirror(root_1, root_2);
+    deleteTree(root_1);
+    deleteTree(root_2);
 }
 
 /**
@@ -292,13 +319,13 @@ void runMenu()
     switch(choice)
     {
         case 1: 
-            runCQueue();
+            // runCQueue();
             break;
         case 2:
             runMirror();
             break;
         case 3:
-            runZigzag();
+            // runZigzag();
             break;
         default:
             printf("That is an invalid value.\n");
