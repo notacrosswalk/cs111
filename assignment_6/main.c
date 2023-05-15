@@ -158,7 +158,7 @@ void unmirror(TreeNode *root)
     root->left = root->right;
     root->right = temp;
     unmirror(root->left);
-    unmirror(root->right); 
+    unmirror(root->right);
 }
 
 bool traverse_and_check(TreeNode *root_1, TreeNode *root_2)
