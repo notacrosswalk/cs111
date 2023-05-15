@@ -3,6 +3,10 @@
 #include <stdbool.h>
 #include <math.h>
 
+/** 
+ * Struct definitions
+*/
+
 typedef struct queue_node_t
 {
     int data;
@@ -32,6 +36,10 @@ typedef struct bt_node_t
     struct bt_node_t *left;
     struct bt_node_t *right;
 } TreeNode;
+
+/** 
+ * Stack implementation
+ */
 
 void empty_stack()
 {
@@ -69,6 +77,10 @@ int pop()
     temp = NULL;
     return data;
 }
+
+/**
+ * Queue implementation
+ */
 
 void clear_queue()
 {
@@ -115,6 +127,10 @@ int dequeue()
     temp = NULL;
     return data;
 }
+
+/**
+ * Binary Tree implementation
+ */
 
 TreeNode* newTreeNode(int x)
 {
@@ -196,6 +212,18 @@ void preorder_traversal(TreeNode *root)
     preorder_traversal(root->right);
 }
 
+/** 
+ * Circular Queue
+ */
+
+/**
+ * Zig-zag traversal
+ */
+
+/**
+ * Mirror 
+ */
+
 void unmirror(TreeNode *root)
 {
     if(root == NULL)
@@ -227,6 +255,19 @@ bool mirror(TreeNode *root_1, TreeNode *root_2)
     unmirror(root_1);
     return traverse_and_check(root_1, root_2);    
 }
+
+void runMirror()
+{
+    // Input
+    TreeNode *root_1 = input_tree();
+    TreeNode *root_2 = input_tree();
+    
+    mirror(root_1, root_2);
+}
+
+/**
+ * Main program
+ */
 
 void runMenu()
 {
