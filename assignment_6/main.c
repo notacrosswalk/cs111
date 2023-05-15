@@ -28,7 +28,7 @@ typedef struct stack_node_t
 struct stack_t
 {
     StackNode* top;
-} Stack;
+} Stack_1, Stack_2;
 
 typedef struct bt_node_t 
 {
@@ -41,7 +41,7 @@ typedef struct bt_node_t
  * Stack implementation
  */
 
-void empty_stack()
+void empty_stack(struct stack_t Stack)
 {
     while(Stack.top != NULL)
     {
@@ -51,7 +51,7 @@ void empty_stack()
     }
 }
 
-void push(int x)
+void push(struct stack_t Stack, int x)
 {
     StackNode *newNode = (StackNode*) calloc(1, sizeof(StackNode));
     if(newNode == NULL)
@@ -64,7 +64,7 @@ void push(int x)
     StackNode.top = newNode;
 }
 
-int pop()
+int pop(struct stack_t Stack)
 {
     if(Stack.top == NULL)
     {
@@ -220,6 +220,16 @@ void preorder_traversal(TreeNode *root)
  * Zig-zag traversal
  */
 
+void zig_zag_traversal(TreeNode *root)
+{
+    if(root == NULL)
+    {
+        return;
+    }
+    TreeNode *current = root;
+    
+}
+
 /**
  * Mirror 
  */
@@ -243,11 +253,12 @@ bool traverse_and_check(TreeNode *root_1, TreeNode *root_2)
     {
         return true;
     }
-    if(root_1 != root_2)
+    if(root_1->data != root_2->data)
     {
         return false;
     }
-    return traverse_and_check(root_1->left, root_2->left) && traverse_and_check(root_1->right, root_2->right); 
+    return traverse_and_check(root_1->left, root_2->left) 
+            && traverse_and_check(root_1->right, root_2->right); 
 }
 
 bool mirror(TreeNode *root_1, TreeNode *root_2)
