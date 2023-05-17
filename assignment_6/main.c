@@ -225,7 +225,7 @@ void preorder_traversal(TreeNode *root)
  * Circular Queue
  */
 
-void circular_queue()
+void runCQueue()
 {
     // Input
 
@@ -251,10 +251,10 @@ void circular_queue()
         int a[k[i]];
         bool flag[k[i]];
     
-        for(int i = 0; i < k[i]; i++)
+        for(int j = 0; j < k[i]; j++)
         {
-            a[i] = i + 1;
-            flag[i] = true;
+            a[j] = j + 1;
+            flag[j] = true;
         }
 
         // Eliminate alternate elements
@@ -266,26 +266,32 @@ void circular_queue()
         {
             if(size == 1)
             {
-                enqueue(a[j]);
-                printf("%d ", a[j]->data);
                 break;
             }
-            else if(j == k[i])
+            if(j == k[i])
             {
                 j = 0;
-                continue;
             }
-            else if(_switch && flag[j])
+            if(_switch && flag[j])
             {
                 flag[j] = false;
                 _switch = false;
                 size--;
             }
-            else if(flag[j])
+            if(flag[j])
             {
                 _switch = true;
             }
             j++;
+        }
+
+        for(int j = 0; j < k[i]; j++)
+        {
+            if(flag[j] == true)
+            {
+                printf("%d ", a[j]);
+                enqueue(a[j]);
+            }
         }
     }
     printf("\n");
@@ -357,10 +363,20 @@ bool traverse_and_check(TreeNode *root_1, TreeNode *root_2)
             && traverse_and_check(root_1->right, root_2->right); 
 }
 
-bool mirror(TreeNode *root_1, TreeNode *root_2)
+void mirror(TreeNode *root_1, TreeNode *root_2)
 {
     unmirror(root_1);
-    return traverse_and_check(root_1, root_2);    
+
+    bool result =  traverse_and_check(root_1, root_2);    
+
+    if(result)
+    {
+        printf("Yes, they are mirrors of each other.\n");
+    }
+    else
+    {
+        printf("No, they are not mirrors of each other.\n");
+    }
 }
 
 void runMirror()
