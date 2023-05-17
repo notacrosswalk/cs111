@@ -225,6 +225,77 @@ void preorder_traversal(TreeNode *root)
  * Circular Queue
  */
 
+void circular_queue()
+{
+    // Input
+
+    printf("Enter n.\n");
+    int n;
+    scanf("%d", &n);
+
+    printf("Enter the values of k.\n");
+    int k[n];
+    for(int i = 0; i < n; i++)
+    {
+        scanf("%d", &k[i]);
+    }
+
+    // Process
+
+    for(int i = 0; i < n; i++)
+    {
+
+        // Generate circular array
+        
+        int size = k[i];
+        int a[k[i]];
+        bool flag[k[i]];
+    
+        for(int i = 0; i < k[i]; i++)
+        {
+            a[i] = i + 1;
+            flag[i] = true;
+        }
+
+        // Eliminate alternate elements
+
+        bool _switch = true;
+
+        int j = 0;
+        while(true)
+        {
+            if(size == 1)
+            {
+                enqueue(a[j]);
+                printf("%d ", a[j]->data);
+                break;
+            }
+            else if(j == k[i])
+            {
+                j = 0;
+                continue;
+            }
+            else if(_switch && flag[j])
+            {
+                flag[j] = false;
+                _switch = false;
+                size--;
+            }
+            else if(flag[j])
+            {
+                _switch = true;
+            }
+            j++;
+        }
+    }
+    printf("\n");
+
+    // Print the front and rear of the queue
+    printf("%d %d\n", Queue.front->data, Queue.rear->data);
+
+    clear_queue();
+}
+
 /**
  * Zig-zag traversal
  */
@@ -319,7 +390,7 @@ void runMenu()
     switch(choice)
     {
         case 1: 
-            // runCQueue();
+            runCQueue();
             break;
         case 2:
             runMirror();
