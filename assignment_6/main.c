@@ -41,26 +41,26 @@ struct stack_t
  * Stack implementation
  */
 
-bool isEmpty(struct stack_t Stack)
+bool isEmpty(struct stack_t* Stack)
 {
-    if(Stack.top == NULL)
+    if(Stack->top == NULL)
     {
         return true;
     }
     return false;
 }
 
-void empty_stack(struct stack_t Stack)
+void empty_stack(struct stack_t* Stack)
 {
-    while(Stack.top != NULL)
+    while(Stack->top != NULL)
     {
-        StackNode *temp = Stack.top;
-        Stack.top = Stack.top->next;
+        StackNode *temp = Stack->top;
+        Stack->top = Stack->top->next;
         free(temp);
     }
 }
 
-void push(struct stack_t Stack, TreeNode* x)
+void push(struct stack_t* Stack, TreeNode* x)
 {
     StackNode *newNode = (StackNode*) calloc(1, sizeof(StackNode));
     if(newNode == NULL)
@@ -69,19 +69,19 @@ void push(struct stack_t Stack, TreeNode* x)
         exit(0);
     }
     newNode->data = x;
-    newNode->next = Stack.top;
-    Stack.top = newNode;
+    newNode->next = Stack->top;
+    Stack->top = newNode;
 }
 
-TreeNode* pop(struct stack_t Stack)
+TreeNode* pop(struct stack_t* Stack)
 {
-    if(Stack.top == NULL)
+    if(Stack->top == NULL)
     {
         return NULL;
     }
-    TreeNode* data = Stack.top->data;
-    StackNode *temp = Stack.top;
-    Stack.top = Stack.top->next;
+    TreeNode* data = Stack->top->data;
+    StackNode *temp = Stack->top;
+    Stack->top = Stack->top->next;
     free(temp);
     temp = NULL;
     return data;
@@ -318,35 +318,35 @@ void zig_zag_traversal(TreeNode *root)
     struct stack_t* present_stack = &Stack_1;
     struct stack_t* other_stack = &Stack_2;
     
-    push(*present_stack, current);
+    push(present_stack, current);
     
     bool l_to_r = true;
     
-    while(!isEmpty(*present_stack))
+    while(!isEmpty(present_stack))
     {
-        current = pop(*present_stack);
+        current = pop(present_stack);
 
         if(current != NULL)
         {
             if(l_to_r)
             {
                 if(current->left != NULL)
-                    push((*other_stack), current->left);
+                    push((other_stack), current->left);
                 if(current->right != NULL)
-                    push((*other_stack), current->right);
+                    push((other_stack), current->right);
             }
             else
             {
                 if(current->right != NULL)
-                    push((*other_stack), current->right);
+                    push((other_stack), current->right);
                 if(current->left != NULL)
-                    push((*other_stack), current->left);
+                    push((other_stack), current->left);
             }
 
             printf("%d ", current->data);
         }
 
-        if(isEmpty(*present_stack))
+        if(isEmpty(present_stack))
         {
             struct stack_t* temp = present_stack;
             present_stack = other_stack;
@@ -356,8 +356,8 @@ void zig_zag_traversal(TreeNode *root)
     }
     printf("\n");
 
-    empty_stack(Stack_1);
-    empty_stack(Stack_2);
+    empty_stack(present_stack);
+    empty_stack(other_stack);
 }
 
 void runZigZag()
