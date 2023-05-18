@@ -312,16 +312,62 @@ void zig_zag_traversal(TreeNode *root)
     {
         return;
     }
-    TreeNode *current = root;
-    int current_stack = 1;
-    push(Stack_1, current);
-    while(current != NULL)
-    {
-        if(current_stack == 1)
-        {
 
+    TreeNode *current = root;
+    
+    struct stack_t* present_stack = &Stack_1;
+    struct stack_t* other_stack = &Stack_2;
+    
+    push(*present_stack, current);
+    
+    bool l_to_r = true;
+    
+    while(!isEmpty(*present_stack))
+    {
+        current = pop(*present_stack);
+
+        if(current != NULL)
+        {
+            if(l_to_r)
+            {
+                if(current->left != NULL)
+                    push((*other_stack), current->left);
+                if(current->right != NULL)
+                    push((*other_stack), current->right);
+            }
+            else
+            {
+                if(current->right != NULL)
+                    push((*other_stack), current->right);
+                if(current->left != NULL)
+                    push((*other_stack), current->left);
+            }
+
+            printf("%d ", current->data);
+        }
+
+        if(isEmpty(*present_stack))
+        {
+            struct stack_t* temp = present_stack;
+            present_stack = other_stack;
+            other_stack = temp;
+            l_to_r = !l_to_r;
         }
     }
+    printf("\n");
+
+    empty_stack(Stack_1);
+    empty_stack(Stack_2);
+}
+
+void runZigZag()
+{
+    TreeNode *root = input_tree();
+
+    printf("The zig-zag traversal is:\n");
+    zig_zag_traversal(root);
+
+    deleteTree(root);
 }
 
 /**
@@ -381,7 +427,6 @@ void mirror(TreeNode *root_1, TreeNode *root_2)
 
 void runMirror()
 {
-    // Input
     TreeNode *root_1 = input_tree();
     TreeNode *root_2 = input_tree();
     
@@ -412,7 +457,7 @@ void runMenu()
             runMirror();
             break;
         case 3:
-            // runZigzag();
+            runZigZag();
             break;
         default:
             printf("That is an invalid value.\n");
