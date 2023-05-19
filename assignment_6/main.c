@@ -88,11 +88,12 @@ TreeNode* pop(struct stack_t* Stack)
 }
 
 /**
- * Queue implementation
+ * Circular Queue implementation
  */
 
 void clear_queue()
 {
+    Queue.rear->next = NULL;
     while(Queue.front != NULL)
     {
         QueueNode *temp = Queue.front;
@@ -115,9 +116,11 @@ void enqueue(int x)
     {
         Queue.front = newNode;
         Queue.rear = newNode;
+        Queue.rear->next = Queue.front;
     }
     else
     {
+        newNode->next = Queue.rear->next;
         Queue.rear->next = newNode;
         Queue.rear = newNode;
     }
