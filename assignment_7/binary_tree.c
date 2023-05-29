@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <limits.h>
+#include <math.h>
 
 typedef struct binary_tree_node_t
 {
@@ -96,8 +97,8 @@ void q_delete_queue()
 bool empty(TreeNode *root)
 {
     if (!root)
-        return false;
-    return true;
+        return true;
+    return false;
 }
 
 // Inserts in the first available position in level order traversal
@@ -159,22 +160,28 @@ TreeNode *delete(TreeNode *root, int val)
         }
         if (current->left)
         {
-            last = current->left;
+            last = current;
             q_enqueue(current->left);
         }
         if (current->right)
         {
-            last = current->right;
+            last = current;
             q_enqueue(current->right);
         }
     }
+    printf("%d\n", last->data); // DEBUG
+    printf("%d\n", dest->data); // DEBUG
     if (dest != NULL)
     {
         dest->data = current->data;
-        if (last->left == current)
-            last->left = NULL;
-        if (last->right == current)
-            last->right = NULL;
+
+        if(last != NULL)
+        {
+            if (last->left == current)
+                last->left = NULL;
+            if (last->right == current)
+                last->right = NULL;
+        }
         free(current);
         current = NULL;
     }
@@ -243,8 +250,8 @@ void count(TreeNode* root, int* c)
 {
     if(root == NULL) return;
     *c += 1;
-    count(root->left);
-    count(root->right);
+    count(root->left, c);
+    count(root->right, c);
 }
 
 int minimum(TreeNode* root)
@@ -354,6 +361,7 @@ void level_order(TreeNode* root)
         if(current->left) q_enqueue(current->left);
         if(current->right) q_enqueue(current->right);
     }
+    printf("\n");
     q_delete_queue();
 }
 
@@ -361,8 +369,10 @@ void runMenu()
 {
     TreeNode* root = input_tree();
     level_order(root);
+    int choice = 0;
     do
     {
+        choice = 0;
         printf("MENU\n");
         printf("0 - Exit the menu.\n");
         printf("1 - Check if the binary tree is empty.\n");
@@ -376,24 +386,22 @@ void runMenu()
         printf("9 - Count the number of nodes in the binary tree.\n");
         printf("10 - Find the minimum value in the tree.\n");
         printf("11 - Find the maximum value in the tree.\n");
-        int choice = 0;
+        int val = 0;
         scanf("%d", &choice);
         switch(choice)
         {
             case 1:
-                if(empty()) printf("The tree is empty.\n");
+                if(empty(root)) printf("The tree is empty.\n");
                 else printf("The tree is not empty.\n");
                 break;
             case 2: 
                 printf("Enter the value you want to insert.\n");
-                int val = 0;
                 scanf("%d", &val);
                 insert(root, val);
                 level_order(root);
                 break;
             case 3:
                 printf("Enter the value you want to remove.\n");
-                int val = 0;
                 scanf("%d", &val);
                 root = delete(root, val);
                 level_order(root);
@@ -408,10 +416,9 @@ void runMenu()
                 postorder_traversal(root);
                 break;
             case 7:
-                int s = 0;
                 printf("Enter the value to search.\n");
-                scanf("%d", &s);
-                if(!search(root, s))
+                scanf("%d", &val);
+                if(!search(root, val))
                     printf("Not found.\n");
                 else
                     printf("The value was found in the tree.\n");
@@ -419,9 +426,8 @@ void runMenu()
                 printf("%d\n", height(root));
                 break;
             case 9:
-                int c = 0;
-                count(root, &c);
-                printf("%d\n", c);
+                count(root, &val);
+                printf("%d\n", val);
                 break;
             case 10:
                 printf("%d\n", minimum(root));
