@@ -408,7 +408,13 @@ void runMenu()
                 postorder_traversal(root);
                 break;
             case 7:
-                
+                int s = 0;
+                printf("Enter the value to search.\n");
+                scanf("%d", &s);
+                if(!search(root, s))
+                    printf("Not found.\n");
+                else
+                    printf("The value was found in the tree.\n");
             case 8:
                 printf("%d\n", height(root));
                 break;
@@ -417,8 +423,12 @@ void runMenu()
                 count(root, &c);
                 printf("%d\n", c);
                 break;
-            case 9:
-
+            case 10:
+                printf("%d\n", minimum(root));
+                break;
+            case 11:
+                printf("%d\n", maximum(root));
+                break;
         }
     } while(choice != 0);
 }
