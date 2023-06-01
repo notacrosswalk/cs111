@@ -422,6 +422,7 @@ void runMenu()
                     printf("Not found.\n");
                 else
                     printf("The value was found in the tree.\n");
+                break;
             case 8:
                 printf("%d\n", height(root));
                 break;
