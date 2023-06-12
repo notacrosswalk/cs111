@@ -8,25 +8,25 @@ struct book_t
     char *title;
     char *author;
     int quantity;
-    struct book_t* left;
-    struct book_t* right;
+    struct book_t *left;
+    struct book_t *right;
 };
 
-struct book_t* root = NULL;
+struct book_t *root = NULL;
 
-struct book_t* insert_into_tree(struct book_t* parent, struct book_t* node)
+struct book_t *insert_into_tree(struct book_t *parent, struct book_t *node)
 {
-    if(parent == NULL)
+    if (parent == NULL)
     {
         parent = node;
     }
-    
-    else if(node->ISBN < parent->ISBN)
+
+    else if (node->ISBN < parent->ISBN)
     {
         parent->left = insert_into_tree(parent->left, node);
     }
 
-    else if(node->ISBN > parent->ISBN)
+    else if (node->ISBN > parent->ISBN)
     {
         parent->right = insert_into_tree(parent->right, node);
     }
@@ -42,28 +42,28 @@ void insert()
     int quantity = 0;
 
     printf("Enter the following details to insert a record.\n");
-    
+
     printf("ISBN:\n");
     scanf("%lli", &isbn);
 
     printf("Title string length:\n");
     int l_title = 0;
     scanf("%d", &l_title);
-    title = (char *) calloc(1, sizeof(char)*(l_title+1));
+    title = (char *)calloc(1, sizeof(char) * (l_title + 1));
     printf("Title:\n");
     scanf("\n%s", title);
 
     printf("Author string length:\n");
     int l_author = 0;
     scanf("%d", &l_author);
-    author = (char *) calloc(1, sizeof(char)*(l_author+1));
+    author = (char *)calloc(1, sizeof(char) * (l_author + 1));
     printf("Author:\n");
     scanf("\n%s", author);
 
     printf("Quantity:\n");
     scanf("%d", &quantity);
 
-    struct book_t* new_book = (struct book_t*) calloc(1, sizeof(struct book_t));
+    struct book_t *new_book = (struct book_t *)calloc(1, sizeof(struct book_t));
     new_book->ISBN = isbn;
     new_book->title = title;
     new_book->author = author;
@@ -72,19 +72,19 @@ void insert()
     root = insert_into_tree(root, new_book);
 }
 
-struct book_t* search_bst(struct book_t* parent, long long *isbn)
+struct book_t *search_bst(struct book_t *parent, long long *isbn)
 {
-    if(parent == NULL)
+    if (parent == NULL)
     {
         return NULL;
     }
 
-    else if((*isbn) < parent->ISBN)
+    else if ((*isbn) < parent->ISBN)
     {
         return search_bst(parent->left, isbn);
     }
 
-    else if((*isbn) > parent->ISBN)
+    else if ((*isbn) > parent->ISBN)
     {
         return search_bst(parent->right, isbn);
     }
@@ -102,24 +102,24 @@ void search()
     printf("Enter the ISBN of the book you'd like to search for.\n");
     scanf("%lli", &isbn);
 
-    struct book_t* hit = search_bst(root, &isbn);
+    struct book_t *hit = search_bst(root, &isbn);
 
-    if(!hit)
+    if (!hit)
     {
         printf("That book wasn't found in the records!\n");
     }
-    
+
     else
     {
         printf("Search Result:\n");
         printf("ISBN: %lli\nTitle: %s\nAuthor: %s\nQuantity Available: %d\n",
-                hit->ISBN, hit->title, hit->author, hit->quantity);
+               hit->ISBN, hit->title, hit->author, hit->quantity);
     }
 }
 
-void display(struct book_t* node)
+void display(struct book_t *node)
 {
-    if(node == NULL)
+    if (node == NULL)
     {
         return;
     }
@@ -127,7 +127,7 @@ void display(struct book_t* node)
     display(node->left);
 
     printf("\nISBN: %lli\nTitle: %s\nAuthor: %s\nQuantity Available: %d\n",
-            node->ISBN, node->title, node->author, node->quantity);
+           node->ISBN, node->title, node->author, node->quantity);
 
     display(node->right);
 }
@@ -138,9 +138,9 @@ void update()
     long long isbn = 0;
     scanf("%lli", &isbn);
 
-    struct book_t* hit = search_bst(root, &isbn);
+    struct book_t *hit = search_bst(root, &isbn);
 
-    if(!hit)
+    if (!hit)
     {
         printf("A book with the given ISBN could not be found!\n");
     }
@@ -153,18 +153,18 @@ void update()
         scanf("%d", &(hit->quantity));
 
         printf("The book's quantity has been successfully updated to %d.\n",
-                hit->quantity);
+               hit->quantity);
     }
 }
 
-struct book_t* find_min(struct book_t* node)
+struct book_t *find_min(struct book_t *node)
 {
-    if(node == NULL)
+    if (node == NULL)
     {
         return NULL;
     }
 
-    while(node->left)
+    while (node->left)
     {
         node = node->left;
     }
@@ -172,48 +172,48 @@ struct book_t* find_min(struct book_t* node)
     return node;
 }
 
-struct book_t* delete_book(struct book_t* node, long long* isbn)
+struct book_t *delete_book(struct book_t *node, long long *isbn)
 {
-    if(node == NULL)
+    if (node == NULL)
     {
         return NULL;
     }
 
-    else if((*isbn) < node->ISBN)
+    else if ((*isbn) < node->ISBN)
     {
         node->left = delete_book(node->left, isbn);
     }
 
-    else if((*isbn) > node->ISBN)
+    else if ((*isbn) > node->ISBN)
     {
         node->right = delete_book(node->right, isbn);
     }
 
     else
     {
-        if(node->left == NULL && node->right == NULL)
+        if (node->left == NULL && node->right == NULL)
         {
             free(node);
             node = NULL;
         }
 
-        else if(node->left == NULL)
+        else if (node->left == NULL)
         {
-            struct book_t* temp = node->right;
+            struct book_t *temp = node->right;
             free(node);
             node = temp;
         }
 
-        else if(node->right == NULL)
+        else if (node->right == NULL)
         {
-            struct book_t* temp = node->left;
+            struct book_t *temp = node->left;
             free(node);
             node = temp;
         }
 
         else
         {
-            struct book_t* temp = find_min(node->right);
+            struct book_t *temp = find_min(node->right);
 
             node->ISBN = temp->ISBN;
             node->quantity = temp->quantity;
@@ -233,9 +233,9 @@ void delete()
     long long isbn = 0;
     scanf("%lli", &isbn);
 
-    struct book_t* hit = search_bst(root, &isbn);
+    struct book_t *hit = search_bst(root, &isbn);
 
-    if(!hit)
+    if (!hit)
     {
         printf("Book not found!\n.");
     }
@@ -246,13 +246,16 @@ void delete()
     }
 }
 
-void clear_memory(struct book_t* node)
+void clear_memory(struct book_t *node)
 {
-    if(node == NULL) return;
+    if (node == NULL)
+        return;
 
     clear_memory(node->left);
     clear_memory(node->right);
 
+    free(node->title);
+    free(node->author);
     free(node);
 }
 
@@ -267,18 +270,31 @@ void run_menu()
         printf("3 - Display all books\n");
         printf("4 - Update book quantity\n");
         printf("5 - Remove a book\n");
-        
+
         scanf("%d", &choice);
 
-        switch(choice)
+        switch (choice)
         {
-            case 0: break;
-            case 1: insert(); break;
-            case 2: search(); break;
-            case 3: display(root); break;
-            case 4: update(); break;
-            case 5: delete(); break;
-            default: printf("Invalid choice!\n"); break; 
+        case 0:
+            break;
+        case 1:
+            insert();
+            break;
+        case 2:
+            search();
+            break;
+        case 3:
+            display(root);
+            break;
+        case 4:
+            update();
+            break;
+        case 5:
+            delete ();
+            break;
+        default:
+            printf("Invalid choice!\n");
+            break;
         }
     } while (choice != 0);
 
