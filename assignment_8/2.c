@@ -1,188 +1,247 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
-struct pqnode_t
+#define MAX_SIZE 50
+
+struct patient_t
 {
-    int priority;
-    char *name;
     int id;
-    struct pqnode_t* parent;
-    struct pqnode_t *left;
-    struct pqnode_t *right;
+    char name[30];
+    int priority;
 };
 
-struct pqnode_t *root = NULL;
-
-/*
-    Queue Implementation
-*/
-
-struct node_t
+struct binary_heap_t
 {
-    struct pqnode_t* data;
-    struct node_t* next;
+    struct patient_t patients[MAX_SIZE];
+    int size;
 };
 
-struct queue_t
+void swap(struct patient_t* a, struct patient_t* b)
 {
-    struct node_t* front;
-    struct node_t* rear;
-} Queue;
+    struct patient_t temp = *a;
+    *a = *b;
+    *b = temp;
+}
 
-bool q_underflow()
+void heapify_up(struct binary_heap_t* heap, int index)
 {
-    if(Queue.front)
+    if(index == 0) 
+        return;
+
+    int parent_index = (index - 1) / 2;
+
+    if(heap->patients[index].priority < heap->patients[parent_index].priority)
     {
-        return false;
+        swap(&heap->patients[index], &heap->patients[parent_index]);
+        heapify_up(heap, parent_index);
     }
-    return true;
 }
 
-bool q_overflow()
+void heapify_down(struct binary_heap_t* heap, int index)
 {
-    struct node_t* test = (struct node_t*) malloc(sizeof(struct node_t));
-    bool result = false;
-    if(!test) result = !result;
-    free(test);
-    test = NULL;
-    return result;   
-}
+    int smallest = index;
 
-void q_enqueue(struct pqnode_t* val)
-{
-    struct node_t* newNode = (struct node_t*) calloc(1, sizeof(struct node_t));
-    if(newNode == NULL)
+    int l_child = 2*index + 1;
+    int r_child = 2*index + 2;
+
+    if(l_child < heap->size && heap->patients[l_child].priority < heap->patients[index].priority)
     {
-        printf("Overflow!\n");
+        smallest = l_child;
+    }
+
+    if(r_child < heap->size && heap->patients[r_child].priority < heap->patients[smallest].priority)
+    {
+        smallest = r_child;
+    }
+
+    if(smallest != index)
+    {
+        swap(&heap->patients[index], &heap->patients[smallest]);
+        heapify_down(heap, smallest);
+    }
+}
+
+void add_patient(struct binary_heap_t* heap)
+{
+    if(heap->size == MAX_SIZE)
+    {
+        printf("The queue is full. Insertions are not possible.\n");
         return;
     }
-    newNode->data = val;
-    if(Queue.front)
+
+    struct patient_t new_patient;
+    
+    printf("Enter patient ID:\n");
+    scanf("%d", &new_patient.id);
+    printf("Enter patient name:\n");
+    scanf("\n%[^\n]s", &new_patient.name);
+    printf("Enter patient priority:\n");
+    scanf("%d", &new_patient.priority);
+
+    heap->patients[heap->size] = new_patient;
+    heapify_up(heap, heap->size);
+    heap->size++;
+
+    printf("Patient added successfully.\n");
+}
+
+void treat_patient(struct binary_heap_t* heap)
+{
+    if(heap->size == 0)
     {
-        Queue.rear->next = newNode;
-        Queue.rear = newNode;
+        printf("Queue is empty.\n");
+        return;
+    }
+
+    struct patient_t treated_patient = heap->patients[0];
+    printf("Treating patient - ID: %d, Name: %s, Priority: %d\n", treated_patient.id, treated_patient.name, treated_patient.priority);
+
+    heap->patients[0] = heap->patients[heap->size - 1];
+    heap->size--;
+    heapify_down(heap, 0);
+}
+
+void display_queue(struct binary_heap_t* heap) 
+{
+    if (heap->size == 0) 
+    {
+        printf("Queue is empty.\n");
+        return;
+    }
+
+    printf("Queue:\n");
+    for (int i = 0; i < heap->size; i++) 
+    {
+        printf("ID: %d, Name: %s, Priority: %d\n", heap->patients[i].id, heap->patients[i].name, heap->patients[i].priority);
+    }
+}
+
+void check_patient_count(struct binary_heap_t* heap)
+{
+    printf("%d patients are waiting.\n", heap->size);
+}
+
+void update_patient_priority(struct binary_heap_t* heap)
+{
+    if(heap->size == 0)
+    {
+        printf("Queue is empty!\n");
+        return;
+    }
+
+    int id;
+    printf("Enter the patient ID to update priority:\n");
+    scanf("%d", &id);
+
+    int index = -1;
+    for (int i = 0; i < heap->size; i++) 
+    {
+        if (heap->patients[i].id == id) 
+        {
+            index = i;
+            break;
+        }
+    }
+
+    if(index == -1)
+    {
+        printf("A patient with that ID was not found.\n");
+        return;
+    }
+
+    int new_priority = 0;
+    printf("Enter the new priority:\n");
+    scanf("%d", &new_priority);
+
+    bool up = true;
+
+    if(new_priority > heap->patients[index].priority)
+    {
+        up = false;
+    }
+
+    heap->patients[index].priority = new_priority;
+
+    if(index == 0)
+    {
+        heapify_down(heap, index);
+    }
+    else if(up)
+    {
+        heapify_up(heap, index);
     }
     else
     {
-        Queue.front = newNode;
-        Queue.rear = newNode;
+        heapify_down(heap, index);
     }
+    
+    printf("Patient priority updated successfully.\n");
 }
 
-struct pqnode_t* q_dequeue()
+void clear_queue(struct binary_heap_t* heap) 
 {
-    if(Queue.front)
+    if (heap->size == 0) 
     {
-        struct pqnode_t* val = Queue.front->data;
-        struct node_t* temp = Queue.front;
-        Queue.front = Queue.front->next;
-        free(temp);
-        temp = NULL;
-        return val;
-    }
-    return NULL;
-}
-
-void q_delete_queue()
-{
-    while(!underflow())
-    {
-        dequeue();
-    }
-}
-
-void swap(struct pqnode_t *p, struct pqnode_t *q)
-{
-    if (!p || !q)
-        return;
-
-    int temp_priority = p->priority;
-    char *temp_name = p->name;
-    int temp_id = p->id;
-
-    p->priority = q->priority;
-    p->name = q->name;
-    p->id = q->id;
-
-    q->priority = temp_priority;
-    q->name = temp_name;
-    q->id = temp_id;
-}
-
-void heapify(struct pqnode_t* node)
-{
-    if(!node) return NULL;
-    if(!node->parent) return node;
-
-    if(node->priority < node->parent->priority)
-    {
-        swap(node, node->parent);
-        heapify(node->parent);
-    }
-}
-
-void add_patient()
-{
-    int id = 0;
-    printf("\nPatient ID:\n");
-    scanf("%d", &id);
-
-    int name_l = 0;
-    printf("Patient Name Length:\n");
-    scanf("%d", &name_l);
-
-    char* name = (char*) calloc(1, sizeof(char)*(name_l + 1));
-    printf("Patient Name:\n");
-    scanf("\n%s", name);
-
-    int priority = 0;
-    printf("Patient Priority:\n");
-    scanf("%d", &priority);
-
-    struct pqnode_t* new_node = (struct pqnode_t*) 
-                                calloc(1, sizeof(struct pqnode_t));
-
-    new_node->id = id;
-    new_node->name = name;
-    new_node->priority =priority; 
-
-    if(root == NULL)
-    {
-        root = new_node;
+        printf("Queue is already empty.\n");
         return;
     }
 
-
-    struct pqnode_t* current = NULL;
-    q_enqueue(root);
-    while (!q_underflow())
-    {
-        current = q_dequeue();
-        if (current->left)
-            q_enqueue(current->left);
-        else
-        {
-            current->left = new_node;
-            new_node->parent = current;
-            break;
-        }
-        if (current->right)
-            q_enqueue(current->right);
-        else
-        {
-            current->right = new_node;
-            new_node->parent = current;
-            break;
-        }
-    }
-
-    q_delete_queue();
-
-    heapify(new_node);
+    heap->size = 0;
+    printf("Queue has been cleared.\n");
 }
 
-void treat()
+void run_menu()
 {
-    if()
+    struct binary_heap_t heap;
+    heap.size = 0;
+
+    int choice = 0;
+    do 
+    {
+        printf("\nPatient Queue\n");
+        printf("1. Add a Patient\n");
+        printf("2. Treat a Patient\n");
+        printf("3. Display Waiting Queue\n");
+        printf("4. Check Patient Count\n");
+        printf("5. Update Patient Priority\n");
+        printf("6. Clear Waiting Queue\n");
+        printf("0. Exit\n");
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch (choice) 
+        {
+            case 1:
+                add_patient(&heap);
+                break;
+            case 2:
+                treat_patient(&heap);
+                break;
+            case 3:
+                display_queue(&heap);
+                break;
+            case 4:
+                check_patient_count(&heap);
+                break;
+            case 5:
+                update_patient_priority(&heap);
+                break;
+            case 6:
+                clear_queue(&heap);
+                break;
+            case 0:
+                printf("Exiting program.\n");
+                break;
+            default:
+                printf("Invalid choice. Please try again.\n");
+                break;
+        }
+    } while (choice != 0);
+}
+
+int main()
+{
+    run_menu();
+    return 0;
 }
