@@ -51,14 +51,14 @@ void insert()
     scanf("%d", &l_title);
     title = (char *)calloc(1, sizeof(char) * (l_title + 1));
     printf("Title:\n");
-    scanf("\n%s", title);
+    scanf("\n%[^\n]s", title);
 
     printf("Author string length:\n");
     int l_author = 0;
     scanf("%d", &l_author);
     author = (char *)calloc(1, sizeof(char) * (l_author + 1));
     printf("Author:\n");
-    scanf("\n%s", author);
+    scanf("\n%[^\n]s", author);
 
     printf("Quantity:\n");
     scanf("%d", &quantity);
@@ -265,6 +265,7 @@ void run_menu()
     do
     {
         printf("\nMENU\n");
+        printf("0 - Exit\n");
         printf("1 - Insert a book\n");
         printf("2 - Search for a book\n");
         printf("3 - Display all books\n");
