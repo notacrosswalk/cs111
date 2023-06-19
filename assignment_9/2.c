@@ -52,7 +52,7 @@ void mergesort(int l, int r, int* arr, int *count)
 
 void selectionsort(int *arr, int n, int* count)
 {
-    for(int i = 0; i < n; i++)
+    for(int i = 0; i < n - 1; i++)
     {
         int min = i;
         for(int j = i + 1; j < n; j++)

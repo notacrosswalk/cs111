@@ -51,6 +51,34 @@ void run()
     printf("Enter the array elements\n");
     for(int i = 0; i < n; i++)
         scanf("%d", &arr[i]);
+    printf("Enter the target sum\n");
+    int k;
+    scanf("%d", &k);
     mergesort(0, n-1, arr);
-    
+    int l = 0;
+    int r = n - 1;
+    while(l < r && r < n && l >= 0)
+    {
+        if(arr[l] + arr[r] > k)
+        {
+            r = r - 1;
+        }
+        else if(arr[l] + arr[r] < k)
+        {
+            l += 1;
+        }
+        else
+        {
+            printf("Indices: %d and %d\nElements: %d and %d\n", 
+                   l, r, arr[l], arr[r]);
+            return;
+        }
+    }
+    printf("Not found!\n");
+}
+
+int main()
+{
+    run();
+    return 0;
 }
