@@ -62,8 +62,11 @@ void selectionsort(int *arr, int n, int* count)
                 min = j;
             }
         }
-        swap(&arr[i], &arr[min]);
-        *count += 1;
+        if(min != i)
+        {
+            swap(&arr[i], &arr[min]);
+            *count += 1;
+        }
     }
 }
 
@@ -109,7 +112,7 @@ int partition(int *arr, int l, int r, int* count)
         }
         while(arr[j] > pivot && j >= l + 1)
         {
-            j--;
+            j--; 
         }
         if(i < j) 
         {
