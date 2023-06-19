@@ -148,9 +148,6 @@ int main()
     mergesort(0, size - 1, arr3, counts+3);
     quicksort(arr4, 0, size-1, counts+4);
 
-    // for(int i = 0; i < 5; i++)
-    //     printf("%d\n", counts[i]);
-
     int min = 0;
     for(int i = 1; i < 5; i++)
     {

@@ -57,11 +57,11 @@ void run()
     mergesort(0, n-1, arr);
     int l = 0;
     int r = n - 1;
-    while(l < r && r < n && l >= 0)
+    while(l < r)
     {
         if(arr[l] + arr[r] > k)
         {
-            r = r - 1;
+            r -= 1;
         }
         else if(arr[l] + arr[r] < k)
         {
