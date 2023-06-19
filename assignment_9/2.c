@@ -91,6 +91,7 @@ void insertionsort(int *arr, int n, int *count)
         {
             swap(&arr[j], &arr[j-1]);
             *count += 1;
+            j--;
         }
     }
 }
